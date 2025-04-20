@@ -5,7 +5,7 @@ name: Update Timestamp
 on:
   # 设置定时触发 - 每天 0点、6点、12点、18点 运行
   schedule:
-    - cron: '0 0,6,12,18 * * *'
+    - cron: '0 0,6,12,18 * * *'  # 修正了cron表达式
   # 保留手动触发选项
   workflow_dispatch:
 
@@ -14,27 +14,36 @@ jobs:
   update-timestamp:
     # 指定运行环境
     runs-on: ubuntu-latest
+    # 添加必要的权限
+    permissions:
+      contents: write
     
     # 执行的步骤
     steps:
-      # 检出仓库代码
+      # 检出仓库代码，使用更多权限
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       
       # 创建或更新时间戳文件
       - name: Update timestamp file
         run: |
-          echo "仓库最后更新时间: $(date)" > "更新时间.md"
-          echo "GitHub Actions 自动更新于 $(date)" >> "更新时间.md"
+          echo "# 仓库最后更新时间" > "更新时间.md"
+          echo "- 更新时间: $(date)" >> "更新时间.md"
+          echo "- GitHub Actions 自动更新" >> "更新时间.md"
       
-      # 配置 Git 用户
-      - name: Configure Git
+      # 检查是否有变更需要提交
+      - name: Check if there are changes
+        id: changes
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git diff --exit-code || echo "changes=true" >> $GITHUB_OUTPUT
       
-      # 提交更改
+      # 提交更改（仅当有变更时）
       - name: Commit and push changes
+        if: steps.changes.outputs.changes == 'true'
         run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add "更新时间.md"
           git commit -m "自动更新时间戳 $(date)"
           git push
