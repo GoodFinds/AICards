@@ -1,0 +1,40 @@
+# 定时更新仓库时间戳的工作流
+name: Update Timestamp
+
+# 控制工作流何时运行
+on:
+  # 设置定时触发 - 每天 0点、6点、12点、18点 运行
+  schedule:
+    - cron: '0 0,6,12,18 * * *'
+  # 保留手动触发选项
+  workflow_dispatch:
+
+# 工作流由一个或多个作业组成
+jobs:
+  update-timestamp:
+    # 指定运行环境
+    runs-on: ubuntu-latest
+    
+    # 执行的步骤
+    steps:
+      # 检出仓库代码
+      - uses: actions/checkout@v4
+      
+      # 创建或更新时间戳文件
+      - name: Update timestamp file
+        run: |
+          echo "仓库最后更新时间: $(date)" > "更新时间.md"
+          echo "GitHub Actions 自动更新于 $(date)" >> "更新时间.md"
+      
+      # 配置 Git 用户
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+      
+      # 提交更改
+      - name: Commit and push changes
+        run: |
+          git add "更新时间.md"
+          git commit -m "自动更新时间戳 $(date)"
+          git push
