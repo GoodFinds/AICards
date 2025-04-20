@@ -2,6 +2,8 @@
 
 🌐 全球AI和数字服务访问指南 | Global AI and Digital Services Access Guide
 
+**[立即开通AI服务](https://bewildcard.com/i/KTJ5AER6)**
+
 ![更新状态](https://img.shields.io/github/last-commit/yourusername/AICards)
 ![许可证](https://img.shields.io/github/license/yourusername/AICards)
 ![Stars](https://img.shields.io/github/stars/yourusername/AICards?style=social)
@@ -67,3 +69,4 @@ AICards是一个帮助用户访问全球AI和数字服务的指南仓库。我�
 ---
 
 如果您觉得本项目有帮助，请考虑给它一个⭐！
+**[立即开通AI服务](https://bewildcard.com/i/KTJ5AER6)**
