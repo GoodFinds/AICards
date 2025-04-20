@@ -30,7 +30,6 @@ jobs:
         run: |
           echo "# 仓库最后更新时间" > "更新时间.md"
           echo "- 更新时间: $(date)" >> "更新时间.md"
-          echo "- GitHub Actions 自动更新" >> "更新时间.md"
       
       # 检查是否有变更需要提交
       - name: Check if there are changes
